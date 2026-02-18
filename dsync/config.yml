@@ -1,0 +1,32 @@
+remotes:
+  diskstation: 
+    url: "rsync://$USER@192.168.1.50"
+    auth: RSYNC_PASSWORD
+paths:
+  documents:
+    from: $HOME/Documents/
+    to: diskstation:/Documents
+    options: --exclude=#recycle
+    reciprocal: true
+  music:
+    from: $HOME/Music/
+    to: diskstation:/Music
+    reciprocal: false
+  photos:
+    from: $HOME/Pictures/
+    to: diskstation:/photo
+    reciprocal: false
+  videos:
+    from: $HOME/Videos/
+    to: diskstation:/Videos
+    reciprocal: false
+  workspace: 
+    from: $HOME/workspace/
+    to: diskstation:/home/workspace
+    reciprocal: false
+    options: --exclude=.git/ --exclude=.cache/
+  home:
+    from: $HOME/
+    to: diskstation:/home/$(hostname)/$USER
+    options: --exclude-from=$SYNC_HOME/home_exclusions
+    reciprocal: false
