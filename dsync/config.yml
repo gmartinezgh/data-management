@@ -1,6 +1,6 @@
 remotes:
   diskstation: 
-    url: "rsync://$USER@192.168.1.50"
+    url: rsync://$USER@192.168.1.50
     auth: RSYNC_PASSWORD
 paths:
   documents:
@@ -22,11 +22,11 @@ paths:
     reciprocal: false
   workspace: 
     from: $HOME/workspace/
-    to: diskstation:/home/workspace
+    to: diskstation:backups/home/workspace
     reciprocal: false
     options: --exclude=.git/ --exclude=.cache/
   home:
     from: $HOME/
-    to: diskstation:/home/$(hostname)/$USER
-    options: --exclude-from=$SYNC_HOME/home_exclusions
+    to: diskstation:/backups/home/$(hostname)/$USER
+    options: --exclude-from=$DSYNC_HOME/home_exclusions
     reciprocal: false

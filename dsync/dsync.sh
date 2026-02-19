@@ -1,11 +1,14 @@
 #!/bin/bash
 
 # todo
-#  - control and log synch errors
+# - control synch errors
 # - Simplify yq calls
+# - maintenance of log file
+# - test checksum instead of times for rsync
 
 DSYNC_HOME="$HOME/.config/data-management"
-default_options="-avz --log-file=$DSYNC_HOME/rsync.log"
+exclude_file="/tmp/rsync_exclude"
+default_options="-avz --log-file=$DSYNC_HOME/rsync.log --exclude-from=$exclude_file"
 
 # Parse command-line options
 cli_options=""
@@ -26,10 +29,12 @@ function get_path_config {
     config=$(yq -r "$filter" $DSYNC_HOME/config.yml)
     if [[ $key == "from" || $key == "to" ]]; then
         echo $config | parse_path
+    elif [[ $key == "exclude" ]]; then
+        yq -r ".[]" <<< $config
     elif [[ $config == "null" ]]; then
         echo ''
     else
-        echo $config
+        echo "$config"
     fi
 }
 
@@ -59,6 +64,7 @@ while IFS= read -r path; do
         to=$(get_path_config "to")
         options="$default_options $(get_path_config "options") $cli_options"
         reciprocal=$(get_path_config "reciprocal")
+        cat <<< $(get_path_config "exclude") > $exclude_file
 
         rsync $options $from $to
 
