@@ -6,13 +6,14 @@ paths:
   documents:
     from: $HOME/Documents/
     to: diskstation:/Documents
-    options: --exclude=#recycle
+    exclude:
+      - \#recycle/
     reciprocal: true
   music:
     from: $HOME/Music/
     to: diskstation:/Music
     reciprocal: false
-  photos:
+  photo:
     from: $HOME/Pictures/
     to: diskstation:/photo
     reciprocal: false
@@ -22,11 +23,22 @@ paths:
     reciprocal: false
   workspace: 
     from: $HOME/workspace/
-    to: diskstation:backups/home/workspace
+    to: diskstation:/backups/home/workspace
     reciprocal: false
-    options: --exclude=.git/ --exclude=.cache/
+    exclude:
+      - .git/
+      - .cache/
   home:
     from: $HOME/
     to: diskstation:/backups/home/$(hostname)/$USER
-    options: --exclude-from=$DSYNC_HOME/home_exclusions
+    exclude:
+      - Documents
+      - Music
+      - Videos
+      - Pictures
+      - workspace
+      - Downloads
+      - tmp
+      - .git/
+      - .cache/
     reciprocal: false
