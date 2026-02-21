@@ -20,8 +20,8 @@ Multiple remote hosts to copy files to/from are supported. For each remote host 
 
 ### Manual usage
 ```bash
-./dsync --help
-./dsync --dry-run
+dsync --help
+dsync --dry-run
 ```
 
 ## Cloud provisioning
