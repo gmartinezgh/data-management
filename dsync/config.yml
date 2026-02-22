@@ -41,4 +41,12 @@ paths:
       - tmp
       - .git/
       - .cache/
+      - Code - OSS/Backups/
+      - Code - OSS/Cache/
+      - Code - OSS/GPUCache/
+      - Code - OSS/logs/
+      - .ssh/
+      - .local/share/keyring/
+      - .local/share/Trash
+      - .cred
     reciprocal: false
