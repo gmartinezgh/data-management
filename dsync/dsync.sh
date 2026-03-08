@@ -88,6 +88,7 @@ DSYNC_HOME="$XDG_CONFIG_HOME/dsync"
 CONFIG_FILE="$DSYNC_HOME/config.yml"
 CRED_FILE="$DSYNC_HOME/dsync.cred"
 LOG_FILE="$HOME/dsync.log"
+OLDEST_LOG="1 week ago"
 EXCLUDE_FILE="/tmp/rsync_exclude"
 YQ_ERROR_FILE="/tmp/yq.error"
 default_options="-avzc --password-file=$CRED_FILE --log-file=$LOG_FILE --exclude-from=$EXCLUDE_FILE"
@@ -170,6 +171,17 @@ if [[ ! -z $single_path ]]; then
         exit 1
     fi
 fi
+
+# Cleanup old log entries
+keep_from=$(date -d "$OLDEST_LOG" +%s)
+while IFS= read -r log_entry; do
+    (
+        log_time=$(echo $log_entry | cut -d ' ' -f 1)
+        if [ "$(date -d $log_time +%s)" -ge "$keep_from" ]; then
+            echo $log_entry
+        fi
+    )
+done <<< $(cat $LOG_FILE) > $LOG_FILE
 
 # Process sequentially all paths configured
 while IFS= read -r path_alias; do
